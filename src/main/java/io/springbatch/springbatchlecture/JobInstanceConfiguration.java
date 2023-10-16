@@ -2,6 +2,7 @@ package io.springbatch.springbatchlecture;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -12,9 +13,12 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Date;
+import java.util.Map;
+
 @Configuration
 @RequiredArgsConstructor
-public class DBJonConfiguration {
+public class JobInstanceConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -33,7 +37,9 @@ public class DBJonConfiguration {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("step 1");
+                        JobParameters jobParameters = stepContribution.getStepExecution().getJobExecution().getJobParameters();
+
+                        System.out.println("step 1 executed");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
@@ -45,7 +51,7 @@ public class DBJonConfiguration {
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("step 2");
+                        System.out.println("step 2 executed");
                         return RepeatStatus.FINISHED;
                     }
                 }).build();
